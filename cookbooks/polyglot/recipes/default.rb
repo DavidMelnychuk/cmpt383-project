@@ -48,3 +48,6 @@ execute 'go get github.com/streadway/amqp github.com/google/uuid' do
  environment 'HOME' => user_home
  creates user_home + '/go/src/github.com/streadway/amqp/README.md'
 end
+
+# Packages needed:
+# go get -u github.com/gin-gonic/gin
