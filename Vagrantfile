@@ -15,6 +15,8 @@ Vagrant.configure("2") do |config|
   # `vagrant box outdated`. This is not recommended.
   # config.vm.box_check_update = false
 
+  config.vm.boot_timeout = 600
+  
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
@@ -58,6 +60,17 @@ Vagrant.configure("2") do |config|
   #
   # View the documentation for the provider you are using for more
   # information on available options.
+
+  # Needed to fix hash sum mismatch error on vagrant up
+  # https://askubuntu.com/questions/41605/trouble-downloading-packages-list-due-to-a-hash-sum-mismatch-error
+
+   $script = <<-SCRIPT
+   sudo rm -rf /var/lib/apt/lists/*
+   sudo apt-get clean
+   sudo apt-get update
+   SCRIPT
+
+  config.vm.provision "shell", inline: $script
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
