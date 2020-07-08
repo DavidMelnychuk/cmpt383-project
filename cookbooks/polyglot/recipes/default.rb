@@ -51,3 +51,7 @@ end
 
 # Packages needed:
 # go get -u github.com/gin-gonic/gin
+# npm install axios
+# need react
+# need nodejs
+# need npm...
