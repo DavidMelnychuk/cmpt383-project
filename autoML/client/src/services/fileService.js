@@ -1,4 +1,5 @@
 import axios from "axios";
+// TODO: Ideally this shouldn't be hardcoded and instead in an ENV variable
 const baseUrl = "http://localhost:8080"
 
 const uploadFile = file => {

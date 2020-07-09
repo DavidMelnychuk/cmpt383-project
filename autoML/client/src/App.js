@@ -24,6 +24,7 @@ const App = () => {
 
   return (
     <div>
+      <h1> Welcome to AutoML</h1>
       <h1>Upload your files for Class 1</h1>
       <FileUpload handleFileChange={(e) => handleFileChange(e, setFileOne, setFilenameOne)} handleUpload={(e) => handleUpload(e,fileOne)}/>
       <h1> Upload your files for Class 2</h1>

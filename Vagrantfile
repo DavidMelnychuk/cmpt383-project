@@ -21,7 +21,9 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 3000, host: 3001
+  config.vm.network "forwarded_port", guest: 8080, host: 8081
+
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -63,6 +65,12 @@ Vagrant.configure("2") do |config|
 
   # Needed to fix hash sum mismatch error on vagrant up
   # https://askubuntu.com/questions/41605/trouble-downloading-packages-list-due-to-a-hash-sum-mismatch-error
+
+ # https://askubuntu.com/questions/1235914/hash-sum-mismatch-error-due-to-identical-sha1-and-md5-but-different-sha256
+ # fixes hash sum mismatch
+  # $ sudo bash
+  # # mkdir /etc/gcrypt
+  # # echo all >> /etc/gcrypt/hwf.deny
 
    $script = <<-SCRIPT
    sudo rm -rf /var/lib/apt/lists/*

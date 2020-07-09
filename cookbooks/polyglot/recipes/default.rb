@@ -35,6 +35,17 @@ package ['build-essential', 'cmake']
 package ['python3', 'python3-pip', 'python3-dev']  # Python
 package 'golang-go'  # Go
 
+# NodeJS (more modern than Ubuntu nodejs package) and NPM
+# remote_file '/opt/installers/node-setup.sh' do
+#  source 'https://deb.nodesource.com/setup_14.x'
+#  mode '0755'
+# end
+# execute '/opt/installers/node-setup.sh' do
+#  creates '/etc/apt/sources.list.d/nodesource.list'
+#  notifies :run, 'execute[apt-get update]', :immediately
+# end
+package ['nodejs']
+
 # RabbitMQ-related things
 package ['rabbitmq-server']
 # Python pika library
@@ -43,10 +54,11 @@ execute 'pip3 install pika==1.1.0' do
 end
 # Go amqp library
 execute 'go get github.com/streadway/amqp github.com/google/uuid' do
- cwd project_home 
- user username
- environment 'HOME' => user_home
- creates user_home + '/go/src/github.com/streadway/amqp/README.md'
+  command 'go get github.com/streadway/amqp github.com/google/uuid'
+#  cwd project_home 
+#  user username
+#  environment 'HOME' => user_home
+#  creates user_home + '/go/src/github.com/streadway/amqp/README.md'
 end
 
 # Packages needed:

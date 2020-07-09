@@ -5,9 +5,10 @@ package main
 
 import (
 	"encoding/json"
+	"log"
+
 	"github.com/google/uuid"
 	"github.com/streadway/amqp"
-	"log"
 )
 
 func failOnError(err error, msg string) {
