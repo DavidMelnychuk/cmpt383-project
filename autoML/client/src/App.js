@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import FileUpload from './components/FileUpload';
-import axios from "axios";
+import fileService from "./services/fileService"
 
 const App = () => {
   const [fileOne, setFileOne] = useState('');
@@ -19,15 +19,7 @@ const App = () => {
   const handleUpload = (event, file) => {
     event.preventDefault();
     console.log(file);
-
-    const formData = new FormData();
-    formData.append('file', file);
-    // TODO: Add try/catch, log error, extract URL to constant, add to service.
-    axios.post("http://localhost:8080/upload", formData, {
-      onUploadProgress: progressEvent => {
-        console.log(progressEvent.loaded / progressEvent.total)
-      }
-    });
+    fileService.uploadFile(file);
   }
 
   return (
