@@ -5,12 +5,13 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	r := gin.Default()
-
+	r.Use(cors.Default())
 	// Handle Single File Upload
 	r.POST("/upload", func(c *gin.Context) {
 		// single file
@@ -21,7 +22,7 @@ func main() {
 		log.Println(file.Filename)
 
 		// Upload the file to specific dst.
-		dst := "uploaded-files/" + file.Filename
+		dst := "uploadedFiles/" + file.Filename
 		err = c.SaveUploadedFile(file, dst)
 		if err != nil {
 			log.Fatal(err)
@@ -34,6 +35,9 @@ func main() {
 			"message": "pong",
 		})
 	})
+
+	// Serve our uploaded files so that python server can access them for ML training
+	r.Static("/uploadedFiles", "./uploadedFiles")
 
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
