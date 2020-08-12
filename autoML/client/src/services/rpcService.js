@@ -5,7 +5,6 @@ const baseUrl = "http://localhost:8080"
 const trainModel = () => {
     const request = axios.get(`${baseUrl}/train`)
     return request.then(response => response.data);
-
 }
 
 export default {trainModel};
