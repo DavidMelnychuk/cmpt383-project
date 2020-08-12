@@ -3,12 +3,12 @@
 import pika
 import json
 
-
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='localhost'))
-channel = connection.channel()
-channel.queue_declare(queue='rpc_queue')
 
+channel = connection.channel()
+
+channel.queue_declare(queue='rpc_queue')
 
 def get_length(request):
     length = len(request['string'])
@@ -24,7 +24,9 @@ def on_request(ch, method, props, body):
         return
     
     print(request)    
+
     response = get_length(request)
+    
     body = json.dumps(response).encode('utf-8')
     
     ch.basic_publish(exchange='',

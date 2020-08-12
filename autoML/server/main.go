@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
+const UPLOAD_FILE_DR = "uploadedFiles/"
 
 func main() {
 	r := gin.Default()
@@ -20,9 +20,8 @@ func main() {
 			log.Fatal(err)
 		}
 		log.Println(file.Filename)
-
 		// Upload the file to specific dst.
-		dst := "uploadedFiles/" + file.Filename
+		dst := UPLOAD_FILE_DR + file.Filename
 		err = c.SaveUploadedFile(file, dst)
 		if err != nil {
 			log.Fatal(err)
@@ -37,7 +36,7 @@ func main() {
 	})
 
 	// Serve our uploaded files so that python server can access them for ML training
-	r.Static("/uploadedFiles", "./uploadedFiles")
+	r.Static(UPLOAD_FILE_DR, "./uploadedFiles")
 
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
