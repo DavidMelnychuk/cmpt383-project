@@ -11,7 +11,6 @@ const UPLOAD_FILE_DR = "uploadedFiles/"
 func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
-	
 	// RPC Request to train model
 	// TODO: Hacky with URL params ... should probably use sockets instead.
 	r.GET("/train/:fileOne/:fileTwo", controllers.TrainModel)

@@ -1,28 +1,34 @@
 package controllers
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"encoding/json"
 	"github.com/google/uuid"
 	"github.com/streadway/amqp"
 )
 
 // Upload a single file
-func TrainModel(c *gin.Context){
+func TrainModel(c *gin.Context) {
 	fileOne := c.Param("fileOne")
 	fileTwo := c.Param("fileTwo")
 
-	res, err := demoRPC(map[string]string{"string": "test string"})
+	log.Println("File One:", fileOne)
+	log.Println("File Two:", fileTwo)
+
+	res, err := trainModelRPC(map[string]string{
+		"fileOne": fileOne,
+		"fileTwo": fileTwo,
+	})
 
 	if err != nil {
 		log.Fatalf("'Failed to handle RPC request': %s", err)
 		c.JSON(http.StatusInternalServerError, err)
 	}
 
-	log.Printf("%d", res["length"])
+	log.Println("Response: ", res)
+	// Send response back as JSON
 	c.JSON(http.StatusOK, res)
 }
 
@@ -32,7 +38,11 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func demoRPC(request map[string]string) (res map[string]int, err error) {
+// RPC Call to python server to train model
+// Make sure response JSON structure matches that of python server, else fields that don't
+// match will be ignored: https://blog.golang.org/json
+// Interface{} will take all JSON types
+func trainModelRPC(request map[string]string) (res map[string]interface{}, err error) {
 	conn, err := amqp.Dial("amqp://localhost:5672/")
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()

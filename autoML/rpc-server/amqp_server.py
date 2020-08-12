@@ -17,6 +17,22 @@ def get_length(request):
     length = len(request['string'])
     return {'length': length}
 
+def download_file(request):
+    fileOne = request['fileOne']
+    fileTwo = request['fileTwo']
+    print(fileOne)
+    print(fileTwo)
+    return{'status': "success",
+    'test': True,
+    'test2': 5}
+
+    # url = 'http://localhost:8080/uploadedFiles/apple.zip'
+    # r = requests.get(url)
+    # if(len(r.content) == 0):
+    #     print('Error Empty File. ')
+    
+    # with open('apple.zip', 'wb') as file:
+    #     file.write(r.content)
 
 def on_request(ch, method, props, body):
     try:
@@ -25,22 +41,14 @@ def on_request(ch, method, props, body):
         ch.basic_ack(delivery_tag=method.delivery_tag)
         print('Bad request:', body)
         return
-    
-    print(request)    
 
-    url = 'http://localhost:8080/uploadedFiles/aple.zip'
-    r = requests.get(url)
-    if(len(r.content)):
-        print('Error Empty File. ')
-
-    open('apple.zip', 'wb').write(r.content)
-
-    # urllib.request.urlretrieve(url, "apple.zip")
-
-
-    response = get_length(request)
+    response = download_file(request)
+    print(response)
+    # print(request)    
+    # download_file('xd')
 
     body = json.dumps(response).encode('utf-8')
+    # body = json.dumps(response).encode('utf-8')
     
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
