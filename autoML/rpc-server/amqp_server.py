@@ -5,6 +5,7 @@ import json
 import requests
 import urllib.request
 
+BASE_URL = 'http://localhost:8080/uploadedFiles/'
 # parameters = pika.URLParameters
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='localhost'))
@@ -13,26 +14,31 @@ channel = connection.channel()
 
 channel.queue_declare(queue='rpc_queue')
 
-def get_length(request):
-    length = len(request['string'])
-    return {'length': length}
-
-def download_file(request):
+# TODO: NICE TO HAVE: Better error handling, e.g send fail response
+def write_file(fileName, content):
+    if(len(content) == 0):
+        print('Error Empty File!')
+    else:
+        with open(fileName, 'wb') as file:
+            file.write(content)
+        
+def download_files(request):
     fileOne = request['fileOne']
     fileTwo = request['fileTwo']
     print(fileOne)
     print(fileTwo)
-    return{'status': "success",
-    'test': True,
-    'test2': 5}
 
-    # url = 'http://localhost:8080/uploadedFiles/apple.zip'
-    # r = requests.get(url)
-    # if(len(r.content) == 0):
-    #     print('Error Empty File. ')
-    
-    # with open('apple.zip', 'wb') as file:
-    #     file.write(r.content)
+    fileOneURL = BASE_URL + fileOne
+    fileTwoURL = BASE_URL + fileTwo
+
+    # Download and save file.
+    # TODO: NICE TO HAVE: Better error handling, e.g send fail response
+    # "File One was Empty!" and then output back to user...
+    fileOneRes = requests.get(fileOneURL)
+    write_file(fileOne, fileOneRes.content)
+    fileTwoRes = requests.get(fileTwoURL)
+    write_file(fileTwo, fileTwoRes.content)
+    return{'status': "success"}
 
 def on_request(ch, method, props, body):
     try:
@@ -42,14 +48,11 @@ def on_request(ch, method, props, body):
         print('Bad request:', body)
         return
 
-    response = download_file(request)
-    print(response)
-    # print(request)    
-    # download_file('xd')
+    response = download_files(request)
+    print('Finished Downloading')
 
     body = json.dumps(response).encode('utf-8')
-    # body = json.dumps(response).encode('utf-8')
-    
+
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
                      properties=pika.BasicProperties(correlation_id=props.correlation_id),
