@@ -22,22 +22,13 @@ def write_file(fileName, content):
         with open(fileName, 'wb') as file:
             file.write(content)
         
-def download_files(request):
-    fileOne = request['fileOne']
-    fileTwo = request['fileTwo']
-    print(fileOne)
-    print(fileTwo)
-
-    fileOneURL = BASE_URL + fileOne
-    fileTwoURL = BASE_URL + fileTwo
-
+def download_file(fileName):
+    fileURL = BASE_URL + fileName
     # Download and save file.
     # TODO: NICE TO HAVE: Better error handling, e.g send fail response
     # "File One was Empty!" and then output back to user...
-    fileOneRes = requests.get(fileOneURL)
-    write_file(fileOne, fileOneRes.content)
-    fileTwoRes = requests.get(fileTwoURL)
-    write_file(fileTwo, fileTwoRes.content)
+    res = requests.get(fileURL)
+    write_file(fileName, res.content)
     return{'status': "success"}
 
 def on_request(ch, method, props, body):
@@ -48,7 +39,13 @@ def on_request(ch, method, props, body):
         print('Bad request:', body)
         return
 
-    response = download_files(request)
+    fileOne = request['fileOne']
+    fileTwo = request['fileTwo']
+    print(fileOne)
+    print(fileTwo)
+
+    response = download_file(fileOne)
+    response = download_file(fileTwo)
     print('Finished Downloading')
 
     body = json.dumps(response).encode('utf-8')
