@@ -13,7 +13,8 @@ func main() {
 	r.Use(cors.Default())
 	
 	// RPC Request to train model
-	r.GET("/train", controllers.TrainModel)
+	// TODO: Hacky with URL params ... should probably use sockets instead.
+	r.GET("/train/:fileOne/:fileTwo", controllers.TrainModel)
 	// Handle Single File Upload
 	r.POST("/upload", controllers.UploadFile)
 	// Serve our uploaded files so that python server can access them for ML training

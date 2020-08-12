@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"github.com/gin-gonic/gin"
@@ -11,8 +12,16 @@ import (
 
 // Upload a single file
 func TrainModel(c *gin.Context){
+	fileOne := c.Param("fileOne")
+	fileTwo := c.Param("fileTwo")
+
 	res, err := demoRPC(map[string]string{"string": "test string"})
-	failOnError(err, "Failed to handle RPC request")
+
+	if err != nil {
+		log.Fatalf("'Failed to handle RPC request': %s", err)
+		c.JSON(http.StatusInternalServerError, err)
+	}
+
 	log.Printf("%d", res["length"])
 	c.JSON(http.StatusOK, res)
 }
