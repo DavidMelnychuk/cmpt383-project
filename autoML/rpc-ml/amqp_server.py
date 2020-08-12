@@ -3,6 +3,7 @@
 import pika
 import json
 
+# parameters = pika.URLParameters
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='localhost'))
 
@@ -26,13 +27,14 @@ def on_request(ch, method, props, body):
     print(request)    
 
     response = get_length(request)
-    
+
     body = json.dumps(response).encode('utf-8')
     
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
                      properties=pika.BasicProperties(correlation_id=props.correlation_id),
                      body=body)
+                     
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 channel.basic_qos(prefetch_count=1)

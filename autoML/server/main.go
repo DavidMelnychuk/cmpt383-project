@@ -6,12 +6,29 @@ import (
 	"net/http"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	// "encoding/json"
+	// "github.com/google/uuid"
+	// "github.com/streadway/amqp"
 )
 const UPLOAD_FILE_DR = "uploadedFiles/"
 
+func failOnError(err error, msg string) {
+	if err != nil {
+		log.Fatalf("%s: %s", msg, err)
+	}
+}
+
+// TODO: Refactor to follow MVC once done, for now put it all in one main server file until it gets unwieldy
 func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
+
+	r.GET("/train", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "pong",
+		})
+	})
+
 	// Handle Single File Upload
 	r.POST("/upload", func(c *gin.Context) {
 		// single file
@@ -29,11 +46,9 @@ func main() {
 		c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", file.Filename))
 	})
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	
+
+
 
 	// Serve our uploaded files so that python server can access them for ML training
 	r.Static(UPLOAD_FILE_DR, "./uploadedFiles")

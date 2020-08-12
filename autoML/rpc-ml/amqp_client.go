@@ -1,12 +1,10 @@
 // go run amqp_client.go
 // based on https://www.rabbitmq.com/tutorials/tutorial-six-go.html
-
 package main
 
 import (
 	"encoding/json"
 	"log"
-
 	"github.com/google/uuid"
 	"github.com/streadway/amqp"
 )

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import FileUpload from './components/FileUpload';
 import fileService from "./services/fileService"
+import rpcService from "./services/rpcService"
 
 const App = () => {
   const [fileOne, setFileOne] = useState('');
@@ -30,6 +31,9 @@ const App = () => {
     // When done => Spinner logo finish.
     // Can then upload another Image. 
     //TODO: Nice to have error handling to prompt user if no files uploaded yet.
+    rpcService.trainModel().then((response) => {
+      console.log(response)
+    })
 
     console.log(event)
   }
