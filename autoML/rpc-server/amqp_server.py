@@ -65,6 +65,9 @@ def download_and_unzip_files(request):
     return dir_name, {'status': "success"}
 
 def train_model(dir_name):
+    # Code adapted from https://www.tensorflow.org/tfx/tutorials/serving/rest_simple#create_your_model
+    # and https://keras.io/examples/vision/image_classification_from_scratch/
+
     image_size = (224, 224)
     batch_size = 32
     NUM_CLASSES = 2
@@ -112,7 +115,7 @@ def train_model(dir_name):
     model.add(layers.Flatten())
     model.add(layers.Dense(NUM_CLASSES, activation='softmax')) # Last output/classifcation layer. 
 
-    # 1 Epoch for the sake of Demo Speed
+    # 1 Epoch for the sake of speed for Demo
     epochs = 1
     model.compile(optimizer='adam', 
                 loss='binary_crossentropy',
@@ -121,6 +124,24 @@ def train_model(dir_name):
 
     results = model.evaluate(val_ds)
     print("test loss, test acc:", results)
+
+    # Save the trained model
+    MODEL_DIR = dir_name + "-" + "model"
+    export_path = os.path.normpath(MODEL_DIR) 
+    print('export_path = {}\n'.format(export_path))
+
+    tf.keras.models.save_model(
+        model,
+        export_path,
+        overwrite=True,
+        include_optimizer=True,
+        save_format=None,
+        signatures=None,
+        options=None
+    )
+
+    print("Done saving model.")
+    return MODEL_DIR
 
 
 
