@@ -5,6 +5,7 @@ import json
 import requests
 import urllib.request
 import os
+from zipfile import ZipFile
 
 BASE_URL = 'http://golang-server:8080/uploadedFiles/'
 
@@ -23,7 +24,8 @@ def write_file(filePath, content):
         with open(filePath, 'wb') as file:
             file.write(content)
         
-def download_files(request):
+def download_and_unzip_files(request):
+    # Get file names and make training directory
     fileOne = request['fileOne']
     fileTwo = request['fileTwo']
 
@@ -34,15 +36,27 @@ def download_files(request):
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
         
+    # Download and save files   
     # TODO: NICE TO HAVE: Better error handling, e.g send fail response
     # TODO: "File One was Empty!" and then output back to user...
     fileOneURL = BASE_URL + fileOne
     fileTwoURL = BASE_URL + fileTwo
-
+    
     fileOneRes = requests.get(fileOneURL)
-    write_file(os.path.join(dir_name, fileOne), fileOneRes.content)
+    write_file(fileOne, fileOneRes.content)
     fileTwoRes = requests.get(fileTwoURL)
-    write_file(os.path.join(dir_name, fileTwo), fileTwoRes.content)
+    write_file(fileTwo, fileTwoRes.content)
+
+    # Unzip files
+    with ZipFile(fileOne, 'r') as zip_file:
+        zip_file.extractall(os.path.join(dir_name, fileOneName))
+    
+    with ZipFile(fileTwo, 'r') as zip_file:
+        zip_file.extractall(os.path.join(dir_name, fileTwoName))
+    
+    # Remove zip files
+    os.remove(fileOne)
+    os.remove(fileTwo)
     return{'status': "success"}
 
 def on_request(ch, method, props, body):
@@ -53,10 +67,11 @@ def on_request(ch, method, props, body):
         print('Bad request:', body)
         return
 
-    response = download_files(request)
+    response = download_and_unzip_files(request)
+
     print('Finished Downloading')
 
-    
+
     body = json.dumps(response).encode('utf-8')
 
     ch.basic_publish(exchange='',
