@@ -21,10 +21,10 @@ services:
             - rabbitmq
 
     python-server:
-        hostname: python-rpc
-        build: ./autoML/rpc-server/
+        hostname: python-server
+        build: ./autoML/python-server/
         volumes:
-            - ./autoML/rpc-server:/app/src/
+            - ./autoML/python-server:/app/src/
         depends_on: 
             - rabbitmq
             - golang-server
