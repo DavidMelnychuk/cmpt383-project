@@ -6,7 +6,7 @@ import requests
 import urllib.request
 import os
 
-BASE_URL = 'http://localhost:8080/uploadedFiles/'
+BASE_URL = 'http://golang-server:8080/uploadedFiles/'
 
 amqp_url = os.environ['AMQP_URL']
 connection = pika.BlockingConnection(pika.URLParameters(amqp_url))

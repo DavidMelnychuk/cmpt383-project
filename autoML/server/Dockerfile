@@ -1,8 +1,8 @@
 FROM golang:latest
 
-RUN mkdir /app
+RUN mkdir -p /app/src
 
-WORKDIR /app
+WORKDIR /app/src
 
 COPY go.mod .
 

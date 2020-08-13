@@ -4,11 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	// "github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	// "encoding/json"
-	// "github.com/google/uuid"
-	// "github.com/streadway/amqp"
 )
 const UPLOAD_FILE_DR = "uploadedFiles/"
 
