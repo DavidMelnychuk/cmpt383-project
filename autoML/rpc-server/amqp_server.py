@@ -6,6 +6,11 @@ import requests
 import urllib.request
 import os
 from zipfile import ZipFile
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+from tensorflow.keras.preprocessing import image_dataset_from_directory
+import numpy as np
 
 BASE_URL = 'http://golang-server:8080/uploadedFiles/'
 
@@ -41,7 +46,7 @@ def download_and_unzip_files(request):
     # TODO: "File One was Empty!" and then output back to user...
     fileOneURL = BASE_URL + fileOne
     fileTwoURL = BASE_URL + fileTwo
-    
+
     fileOneRes = requests.get(fileOneURL)
     write_file(fileOne, fileOneRes.content)
     fileTwoRes = requests.get(fileTwoURL)
@@ -57,7 +62,69 @@ def download_and_unzip_files(request):
     # Remove zip files
     os.remove(fileOne)
     os.remove(fileTwo)
-    return{'status': "success"}
+    return dir_name, {'status': "success"}
+
+def train_model(dir_name):
+    image_size = (224, 224)
+    batch_size = 32
+    NUM_CLASSES = 2
+
+    # Create training and validation datasets
+    train_ds = image_dataset_from_directory(
+        dir_name,
+        labels='inferred',
+        label_mode='binary', 
+        validation_split=0.2,
+        subset="training",
+        seed=1337,
+        image_size=image_size,
+        batch_size=batch_size,
+    )
+
+    val_ds = image_dataset_from_directory(
+        dir_name,
+        labels='inferred',
+        label_mode='binary', 
+        validation_split=0.2,
+        subset="validation",
+        seed=1337,
+        image_size=image_size,
+        batch_size=batch_size,
+    )
+
+    # Improve performance with prefetching
+    train_ds = train_ds.prefetch(buffer_size=32)
+    val_ds = val_ds.prefetch(buffer_size=32)
+    
+    # Transfer learning with pretrained base model
+    base_model = keras.applications.MobileNetV2(
+        include_top=False,
+        weights='imagenet',
+        classes=NUM_CLASSES,
+        pooling='avg',
+        input_shape=(224,224,3))
+
+    #Freeze base model
+    base_model.trainable = False
+
+    model = keras.Sequential()
+    model.add(base_model)
+    model.add(layers.Flatten())
+    model.add(layers.Dense(NUM_CLASSES, activation='softmax')) # Last output/classifcation layer. 
+
+    # 1 Epoch for the sake of Demo Speed
+    epochs = 1
+    model.compile(optimizer='adam', 
+                loss='binary_crossentropy',
+                metrics=['accuracy'])
+    model.fit(train_ds, validation_data=val_ds, batch_size=batch_size, epochs=epochs)
+
+    results = model.evaluate(val_ds)
+    print("test loss, test acc:", results)
+
+
+
+
 
 def on_request(ch, method, props, body):
     try:
@@ -67,9 +134,12 @@ def on_request(ch, method, props, body):
         print('Bad request:', body)
         return
 
-    response = download_and_unzip_files(request)
+    dir_name, response = download_and_unzip_files(request)
+    train_model(dir_name)
 
     print('Finished Downloading')
+    print(dir_name)
+
 
 
     body = json.dumps(response).encode('utf-8')
