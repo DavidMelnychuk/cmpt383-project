@@ -16,20 +16,33 @@ channel = connection.channel()
 channel.queue_declare(queue='rpc_queue')
 
 # TODO: NICE TO HAVE: Better error handling, e.g send fail response
-def write_file(fileName, content):
+def write_file(filePath, content):
     if(len(content) == 0):
         print('Error Empty File!')
     else:
-        with open(fileName, 'wb') as file:
+        with open(filePath, 'wb') as file:
             file.write(content)
         
-def download_file(fileName):
-    fileURL = BASE_URL + fileName
-    # Download and save file.
+def download_files(request):
+    fileOne = request['fileOne']
+    fileTwo = request['fileTwo']
+
+    fileOneName = os.path.splitext(fileOne)[0]
+    fileTwoName = os.path.splitext(fileTwo)[0]
+
+    dir_name = fileOneName + "-" + fileTwoName + "-" + "images"
+    if not os.path.exists(dir_name):
+        os.makedirs(dir_name)
+        
     # TODO: NICE TO HAVE: Better error handling, e.g send fail response
-    # "File One was Empty!" and then output back to user...
-    res = requests.get(fileURL)
-    write_file(fileName, res.content)
+    # TODO: "File One was Empty!" and then output back to user...
+    fileOneURL = BASE_URL + fileOne
+    fileTwoURL = BASE_URL + fileTwo
+
+    fileOneRes = requests.get(fileOneURL)
+    write_file(os.path.join(dir_name, fileOne), fileOneRes.content)
+    fileTwoRes = requests.get(fileTwoURL)
+    write_file(os.path.join(dir_name, fileTwo), fileTwoRes.content)
     return{'status': "success"}
 
 def on_request(ch, method, props, body):
@@ -40,15 +53,10 @@ def on_request(ch, method, props, body):
         print('Bad request:', body)
         return
 
-    fileOne = request['fileOne']
-    fileTwo = request['fileTwo']
-    print(fileOne)
-    print(fileTwo)
-
-    response = download_file(fileOne)
-    response = download_file(fileTwo)
+    response = download_files(request)
     print('Finished Downloading')
 
+    
     body = json.dumps(response).encode('utf-8')
 
     ch.basic_publish(exchange='',

@@ -29,7 +29,6 @@ func TrainModel(c *gin.Context) {
 	}
 
 	log.Println("Response: ", res)
-	// Send response back as JSON
 	c.JSON(http.StatusOK, res)
 }
 
