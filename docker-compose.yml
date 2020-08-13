@@ -1,0 +1,59 @@
+version: '3.7'
+
+services:
+    rabbitmq:
+        hostname: rabbitmq
+        container_name: rabbitmq
+        restart: on-failure
+        image: rabbitmq:3-management
+        ports:
+            - "5672:5672"
+
+    python-server:
+        build: ./autoML/rpc-server/
+        container_name: python-server-383
+        volumes:
+            - ./autoML/rpc-server:/app/src/
+        depends_on: 
+            - rabbitmq
+        environment:
+            # Taken from https://github.com/dmaze/docker-rabbitmq-example/blob/master/docker-compose.yml
+            # The location of the RabbitMQ server.  "amqp" is the protocol;
+            # "rabbitmq" is the hostname.  Note that there is not a guarantee
+            # that the server will start first!  Telling the pika client library
+            # to try multiple times gets around this ordering issue.
+            AMQP_URL: 'amqp://rabbitmq?connection_attempts=5&retry_delay=5'
+
+
+    golang-server:
+        build: ./autoML/server/
+        container_name: go-server-383
+        volumes:
+            - ./autoML/server/:/app/src/
+        ports:
+            - 8080:8080
+        environment:
+            AMQP_URL: 'amqp://rabbitmq?connection_attempts=5&retry_delay=5'
+        depends_on: 
+            - rabbitmq
+            - python-server
+
+    react-app:
+        build: ./autoML/client/
+        container_name: reactapp-383
+        volumes:
+            - ./autoML/client/:/app/src
+        ports:
+            - 3000:3000 
+        environment:
+            - CI=true
+        depends_on:
+            - golang-server
+
+
+
+    
+
+
+
+

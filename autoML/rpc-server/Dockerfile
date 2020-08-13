@@ -1,9 +1,11 @@
 FROM tensorflow/tensorflow:nightly
 
-RUN mkdir /app
+RUN mkdir -p /app/src
 
-WORKDIR /app
+WORKDIR /app/src
 
 COPY . .
+
+RUN pip install -r requirements.txt
 
 CMD ["python", "amqp_server.py"]

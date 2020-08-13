@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/streadway/amqp"
+	"os"
 )
 
 // Upload a single file
@@ -43,7 +44,7 @@ func failOnError(err error, msg string) {
 // match will be ignored: https://blog.golang.org/json
 // Interface{} will take all JSON types
 func trainModelRPC(request map[string]string) (res map[string]interface{}, err error) {
-	conn, err := amqp.Dial("amqp://localhost:5672/")
+	conn, err := amqp.Dial(os.Getenv("AMQP_URL"))
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 

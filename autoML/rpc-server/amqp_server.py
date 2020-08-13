@@ -4,11 +4,12 @@ import pika
 import json
 import requests
 import urllib.request
+import os
 
 BASE_URL = 'http://localhost:8080/uploadedFiles/'
-# parameters = pika.URLParameters
-connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host='localhost'))
+
+amqp_url = os.environ['AMQP_URL']
+connection = pika.BlockingConnection(pika.URLParameters(amqp_url))
 
 channel = connection.channel()
 
