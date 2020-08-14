@@ -1,19 +1,18 @@
-import base64
 import requests
 import json
+from skimage.io import imread
 
-IMAGE_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Scifresh_%28Apple%29.jpg/1024px-Scifresh_%28Apple%29.jpg"
-dl_req = requests.get(IMAGE_URL)
-
-jpg_bytes = base64.b64encode(dl_req.content).decode('utf-8')
-predict_request = {
-    "instances": [{"b64": jpg_bytes}]
-}
+image = "test-image.jpg"
+image_content = imread(image).tolist()
+data = json.dumps({'instances': [image_content]})
 
 
 headers = {"content-type": "application/json"}
-resp = requests.post('http://localhost:8501/v1/models/fashion_model:predict', data=predict_request, headers=headers)
-print(resp.content.decode('utf-8'))
-print('hello world')
-predictions = json.loads(resp.text)['predictions']
-print(predictions)
+resp = requests.post('http://localhost:8501/v1/models/fashion_model:predict', data=data, headers=headers)
+print(resp.text)
+print(json.loads(resp.text))
+
+# print(resp.content.decode('utf-8'))
+# print('hello world')
+# predictions = json.loads(resp.text)
+# print(predictions)
