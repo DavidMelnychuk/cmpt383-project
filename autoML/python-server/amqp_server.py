@@ -11,6 +11,8 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.preprocessing import image_dataset_from_directory
 import numpy as np
+import subprocess
+import tempfile
 
 BASE_URL = 'http://golang-server:8080/uploadedFiles/'
 
@@ -115,7 +117,8 @@ def train_model(dir_name):
     model.add(layers.Flatten())
     model.add(layers.Dense(NUM_CLASSES, activation='softmax')) # Last output/classifcation layer. 
 
-    # 1 Epoch for the sake of speed for Demo
+    # 1 Epoch for the sake of speed for Demo'
+    print('Training Model')
     epochs = 1
     model.compile(optimizer='adam', 
                 loss='binary_crossentropy',
@@ -125,9 +128,9 @@ def train_model(dir_name):
     results = model.evaluate(val_ds)
     print("test loss, test acc:", results)
 
-    # Save the trained model
-    MODEL_DIR = dir_name + "-" + "model"
-    export_path = os.path.normpath(MODEL_DIR) 
+    MODEL_DIR = tempfile.gettempdir()
+    version = 1
+    export_path = os.path.join(MODEL_DIR, str(version))
     print('export_path = {}\n'.format(export_path))
 
     tf.keras.models.save_model(
@@ -139,9 +142,22 @@ def train_model(dir_name):
         signatures=None,
         options=None
     )
+
     print("Done saving model.")
     os.environ["MODEL_DIR"] = MODEL_DIR
     return model, MODEL_DIR
+
+def serve_model():
+#     bash_cmd = "--bg nohup tensorflow_model_server \
+#   --rest_api_port=8501 \
+#   --model_name=fashion_model \
+#   --model_base_path='${MODEL_DIR}' >server.log 2>&1"
+    bash_cmd = "nohup tensorflow_model_server --port=8500 --rest_api_port=8501 \
+  --model_name=fashion_model --model_base_path=" + os.environ["MODEL_DIR"] + " >server.log 2>&1 &"
+    os.system(bash_cmd)
+    # res = subprocess.check_output(['bash', '-c', bash_cmd])
+    # print(res)
+
 
 def on_request(ch, method, props, body):
     try:
@@ -153,12 +169,11 @@ def on_request(ch, method, props, body):
 
     dir_name, response = download_and_unzip_files(request)
     model, model_dir = train_model(dir_name)
+    serve_model()
 
     print('Finished Downloading')
-    print(dir_name)
-    print(model_dir)
-
-
+    # print(dir_name)
+    # print(model_dir)
 
     body = json.dumps(response).encode('utf-8')
 

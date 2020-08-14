@@ -25,6 +25,8 @@ services:
         build: ./autoML/python-server/
         volumes:
             - ./autoML/python-server:/app/src/
+        ports:
+            - 8501:8501
         depends_on: 
             - rabbitmq
             - golang-server

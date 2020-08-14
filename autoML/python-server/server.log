@@ -1,0 +1,20 @@
+2020-08-14 07:07:25.404195: I tensorflow_serving/model_servers/server.cc:87] Building single TensorFlow model file config:  model_name: fashion_model model_base_path: /tmp
+2020-08-14 07:07:25.404826: I tensorflow_serving/model_servers/server_core.cc:464] Adding/updating models.
+2020-08-14 07:07:25.405143: I tensorflow_serving/model_servers/server_core.cc:575]  (Re-)adding model: fashion_model
+2020-08-14 07:07:25.505534: I tensorflow_serving/core/basic_manager.cc:739] Successfully reserved resources to load servable {name: fashion_model version: 1}
+2020-08-14 07:07:25.506055: I tensorflow_serving/core/loader_harness.cc:66] Approving load for servable version {name: fashion_model version: 1}
+2020-08-14 07:07:25.506469: I tensorflow_serving/core/loader_harness.cc:74] Loading servable version {name: fashion_model version: 1}
+2020-08-14 07:07:25.506878: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:31] Reading SavedModel from: /tmp/1
+2020-08-14 07:07:25.552272: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:54] Reading meta graph with tags { serve }
+2020-08-14 07:07:25.552814: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:234] Reading SavedModel debug info (if present) from: /tmp/1
+2020-08-14 07:07:25.553320: I external/org_tensorflow/tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-08-14 07:07:25.698322: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:199] Restoring SavedModel bundle.
+2020-08-14 07:07:26.100964: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:183] Running initialization op on SavedModel bundle at path: /tmp/1
+2020-08-14 07:07:26.254901: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:303] SavedModel load for tags { serve }; Status: success: OK. Took 748016 microseconds.
+2020-08-14 07:07:26.285947: I tensorflow_serving/servables/tensorflow/saved_model_warmup_util.cc:59] No warmup data file found at /tmp/1/assets.extra/tf_serving_warmup_requests
+2020-08-14 07:07:26.291389: I tensorflow_serving/core/loader_harness.cc:87] Successfully loaded servable version {name: fashion_model version: 1}
+2020-08-14 07:07:26.294988: I tensorflow_serving/model_servers/server.cc:367] Running gRPC ModelServer at 0.0.0.0:8500 ...
+[warn] getaddrinfo: address family for nodename not supported
+2020-08-14 07:07:26.298899: I tensorflow_serving/model_servers/server.cc:387] Exporting HTTP/REST API at:localhost:8501 ...
+[evhttp_server.cc : 238] NET_LOG: Entering the event loop ...
