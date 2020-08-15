@@ -33,14 +33,14 @@ def predict():
     # Get prediction JSON response
     resp = requests.post(PREDICT_ENDPOINT, data=data, headers=headers)
     predictions = json.loads(resp.text)['predictions']
-    predicted = np.argmax(predictions[0])
+    # predicted = np.argmax(predictions[0])
     
     # Clean up, remove file before returning response
     if os.path.exists(file.filename):
         os.remove(file.filename)
 
     # return jsonify(resp.text)
-    return json.dumps(int(predicted))
+    return json.dumps(predictions)
 
 if __name__ == "__main__":
     # Only for debugging while developing

@@ -66,7 +66,7 @@ def download_and_unzip_files(request):
     os.remove(fileTwo)
     return dir_name, {'status': "success"}
 
-def train_model(dir_name):
+def train_model(dir_name, fileOneName, fileTwoName):
     # Code adapted from https://www.tensorflow.org/tfx/tutorials/serving/rest_simple#create_your_model
     # and https://keras.io/examples/vision/image_classification_from_scratch/
 
@@ -75,10 +75,13 @@ def train_model(dir_name):
     NUM_CLASSES = 2
 
     # Create training and validation datasets
+    # Need to specify class_names to maintain label order of 0,1 for file 1, file 2
+    # else it goes in alphanumeric order of their names
     train_ds = image_dataset_from_directory(
         dir_name,
         labels='inferred',
         label_mode='binary', 
+        class_names=[fileOneName, fileTwoName],
         validation_split=0.2,
         subset="training",
         seed=1337,
@@ -90,6 +93,7 @@ def train_model(dir_name):
         dir_name,
         labels='inferred',
         label_mode='binary', 
+        class_names=[fileOneName, fileTwoName],
         validation_split=0.2,
         subset="validation",
         seed=1337,
@@ -160,9 +164,15 @@ def on_request(ch, method, props, body):
         print('Bad request:', body)
         return
 
+    fileOne = request['fileOne']
+    fileTwo = request['fileTwo']
+
+    fileOneName = os.path.splitext(fileOne)[0]
+    fileTwoName = os.path.splitext(fileTwo)[0]
+
     dir_name, response = download_and_unzip_files(request)
     print('Finished Downloading')
-    model, model_dir = train_model(dir_name)
+    model, model_dir = train_model(dir_name, fileOneName, fileTwoName)
     serve_model()
     print('Finished Serving')
     body = json.dumps(response).encode('utf-8')
