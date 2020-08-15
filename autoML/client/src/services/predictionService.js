@@ -7,8 +7,8 @@ const predictImage = image => {
     formData.append('image', image);
         // TODO: Add try/catch, log error, 
     return axios.post(`${baseUrl}/predict`, formData, {
-      onUploadProgress: progressEvent => {
-        console.log(progressEvent.loaded / progressEvent.total)
+      headers : {
+        'Content-Type': 'multipart/form-data'
       }
     });
 }
