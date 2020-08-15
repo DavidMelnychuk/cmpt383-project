@@ -52,9 +52,10 @@ services:
 
     python-rest:
         build: ./autoML/python-rest/
+        hostname: python-rest
         container_name: python-rest-383
         volumes:
-            - ./autoML/python-rest/app:/app/
+            - ./autoML/python-rest/app:/app
         ports:
             - 5000:5000
         depends_on: 
