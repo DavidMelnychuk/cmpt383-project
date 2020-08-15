@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import FileUpload from './components/FileUpload';
 import fileService from "./services/fileService"
 import rpcService from "./services/rpcService"
+import PredictImage from './components/PredictImage';
+
 
 const App = () => {
   const [fileOne, setFileOne] = useState('');
@@ -22,7 +24,7 @@ const App = () => {
     console.log(file);
     fileService.uploadFile(file);
   }
-
+  
   const trainModel = (event, filenameOne, filenameTwo) => {
     // Makes a GET request to Go Server
     // Go Server makes a RPC Call to Python server. 
@@ -48,6 +50,7 @@ const App = () => {
       <h1> Upload your files for Class 2</h1>
       <FileUpload handleFileChange={(e) => handleFileChange(e, setFileTwo, setFilenameTwo)} handleUpload={(e) => handleUpload(e, fileTwo)}/>
       <button type="button" onClick={(e) => trainModel(e, filenameOne, filenameTwo)}>Train Model</button>
+      <PredictImage></PredictImage>
     </div>
   );
 }
