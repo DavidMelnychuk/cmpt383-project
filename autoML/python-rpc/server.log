@@ -1,0 +1,25 @@
+2020-08-15 03:01:44.869682: I tensorflow_serving/model_servers/server.cc:87] Building single TensorFlow model file config:  model_name: fashion_model model_base_path: /tmp
+2020-08-15 03:01:44.873733: I tensorflow_serving/model_servers/server_core.cc:464] Adding/updating models.
+2020-08-15 03:01:44.874194: I tensorflow_serving/model_servers/server_core.cc:575]  (Re-)adding model: fashion_model
+2020-08-15 03:01:44.974396: I tensorflow_serving/core/basic_manager.cc:739] Successfully reserved resources to load servable {name: fashion_model version: 1}
+2020-08-15 03:01:44.974910: I tensorflow_serving/core/loader_harness.cc:66] Approving load for servable version {name: fashion_model version: 1}
+2020-08-15 03:01:44.975242: I tensorflow_serving/core/loader_harness.cc:74] Loading servable version {name: fashion_model version: 1}
+2020-08-15 03:01:44.975675: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:31] Reading SavedModel from: /tmp/1
+2020-08-15 03:01:45.640445: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:54] Reading meta graph with tags { serve }
+2020-08-15 03:01:45.640847: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:234] Reading SavedModel debug info (if present) from: /tmp/1
+2020-08-15 03:01:45.641392: I external/org_tensorflow/tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-08-15 03:01:47.626817: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:199] Restoring SavedModel bundle.
+2020-08-15 03:01:48.890467: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:183] Running initialization op on SavedModel bundle at path: /tmp/1
+2020-08-15 03:01:49.163423: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:303] SavedModel load for tags { serve }; Status: success: OK. Took 4187210 microseconds.
+2020-08-15 03:01:49.192710: I tensorflow_serving/servables/tensorflow/saved_model_warmup_util.cc:59] No warmup data file found at /tmp/1/assets.extra/tf_serving_warmup_requests
+2020-08-15 03:01:49.198530: I tensorflow_serving/core/loader_harness.cc:87] Successfully loaded servable version {name: fashion_model version: 1}
+2020-08-15 03:01:49.209270: I tensorflow_serving/model_servers/server.cc:367] Running gRPC ModelServer at 0.0.0.0:8500 ...
+[warn] getaddrinfo: address family for nodename not supported
+[evhttp_server.cc : 238] NET_LOG: Entering the event loop ...
+2020-08-15 03:01:49.219294: I tensorflow_serving/model_servers/server.cc:387] Exporting HTTP/REST API at:localhost:8501 ...
+2020-08-15 03:02:32.493745: W external/org_tensorflow/tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 22413312 exceeds 10% of free system memory.
+2020-08-15 03:02:32.659099: W external/org_tensorflow/tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 22413312 exceeds 10% of free system memory.
+2020-08-15 03:02:32.977215: W external/org_tensorflow/tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 67239936 exceeds 10% of free system memory.
+2020-08-15 03:02:33.132561: W external/org_tensorflow/tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 67568256 exceeds 10% of free system memory.
+2020-08-15 03:02:33.744793: W external/org_tensorflow/tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 16809984 exceeds 10% of free system memory.

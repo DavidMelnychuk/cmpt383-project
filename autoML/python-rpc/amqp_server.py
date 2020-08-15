@@ -117,7 +117,7 @@ def train_model(dir_name):
     model.add(layers.Flatten())
     model.add(layers.Dense(NUM_CLASSES, activation='softmax')) # Last output/classifcation layer. 
 
-    # 1 Epoch for the sake of speed for Demo'
+    # 1 Epoch for the sake of speed for Demo
     print('Training Model')
     epochs = 1
     model.compile(optimizer='adam', 
@@ -148,16 +148,9 @@ def train_model(dir_name):
     return model, MODEL_DIR
 
 def serve_model():
-#     bash_cmd = "--bg nohup tensorflow_model_server \
-#   --rest_api_port=8501 \
-#   --model_name=fashion_model \
-#   --model_base_path='${MODEL_DIR}' >server.log 2>&1"
     bash_cmd = "nohup tensorflow_model_server --port=8500 --rest_api_port=8501 \
   --model_name=fashion_model --model_base_path=" + os.environ["MODEL_DIR"] + " >server.log 2>&1 &"
     os.system(bash_cmd)
-    # res = subprocess.check_output(['bash', '-c', bash_cmd])
-    # print(res)
-
 
 def on_request(ch, method, props, body):
     try:
@@ -168,13 +161,10 @@ def on_request(ch, method, props, body):
         return
 
     dir_name, response = download_and_unzip_files(request)
+    print('Finished Downloading')
     model, model_dir = train_model(dir_name)
     serve_model()
-
-    print('Finished Downloading')
-    # print(dir_name)
-    # print(model_dir)
-
+    print('Finished Serving')
     body = json.dumps(response).encode('utf-8')
 
     ch.basic_publish(exchange='',
