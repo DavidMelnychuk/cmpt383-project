@@ -20,11 +20,11 @@ services:
         depends_on: 
             - rabbitmq
 
-    python-server:
-        hostname: python-server
-        build: ./autoML/python-server/
+    python-rpc:
+        hostname: python-rpc
+        build: ./autoML/python-rpc/
         volumes:
-            - ./autoML/python-server:/app/src/
+            - ./autoML/python-rpc:/app/src/
         ports:
             - 8501:8501
         depends_on: 
@@ -50,10 +50,12 @@ services:
         depends_on:
             - golang-server
 
-
-
-    
-
-
-
-
+    python-rest:
+        build: ./autoML/python-rest/
+        container_name: python-rest-383
+        volumes:
+            - ./autoML/python-rest/app:/app/
+        ports:
+            - 5000:5000
+        depends_on: 
+            - python-rpc
