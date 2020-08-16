@@ -8,6 +8,9 @@ from skimage.io import imread
 from flask import jsonify
 import numpy as np
 import os
+# import tensorflow as tf
+# from keras.preprocessing import image
+
 
 app = Flask(__name__)
 CORS(app)
@@ -26,8 +29,11 @@ def predict():
     file.save(secure_filename(file.filename))
 
     # Create JSON payload for tensorflow REST API
-    image_content = imread(file.filename).tolist()
-    data = json.dumps({'instances': [image_content]})
+    image_contents = imread(file.filename).tolist()
+    # image = tf.keras.preprocessing.image.load_img(file.filename, target_size=(224, 224))
+    # image_contents = tf.keras.preprocessing.image.img_to_array(image)
+    # image_contents = np.expand_dims(image_contents, axis=0).tolist()
+    data = json.dumps({'instances': [image_contents]})
     headers = {"content-type": "application/json"}
 
     # Get prediction JSON response

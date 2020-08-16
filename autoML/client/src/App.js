@@ -10,6 +10,7 @@ const App = () => {
   const [filenameOne, setFilenameOne] = useState('');
   const [fileTwo, setFileTwo] = useState('');
   const [filenameTwo, setFilenameTwo] = useState('');
+  const [classNames, setClassNames] = useState([filenameOne, filenameTwo])
 
   const handleFileChange = (event, setFile, setFilename) => {
     const newFile = event.target.files[0];
@@ -25,7 +26,7 @@ const App = () => {
     fileService.uploadFile(file);
   }
   
-  const trainModel = (event, filenameOne, filenameTwo) => {
+  const trainModel = (event, filenameOne, filenameTwo, setClassNames) => {
     // Makes a GET request to Go Server
     // Go Server makes a RPC Call to Python server. 
     // Python Server then downloads files from this server
@@ -37,20 +38,20 @@ const App = () => {
     event.preventDefault();
     rpcService.trainModel(filenameOne, filenameTwo).then((response) => {
       console.log(response)
+      setClassNames(response.class_names)
     })
-
-    console.log(event)
   }
 
   return (
     <div>
       <h1> Welcome to AutoML</h1>
+      <p>A web application which automatically trains a binary image classifier for two sets of images.</p>
       <h1>Upload your files for Class 1</h1>
       <FileUpload handleFileChange={(e) => handleFileChange(e, setFileOne, setFilenameOne)} handleUpload={(e) => handleUpload(e,fileOne)}/>
       <h1> Upload your files for Class 2</h1>
       <FileUpload handleFileChange={(e) => handleFileChange(e, setFileTwo, setFilenameTwo)} handleUpload={(e) => handleUpload(e, fileTwo)}/>
-      <button type="button" onClick={(e) => trainModel(e, filenameOne, filenameTwo)}>Train Model</button>
-      <PredictImage></PredictImage>
+      <button type="button" onClick={(e) => trainModel(e, filenameOne, filenameTwo, setClassNames)}>Train Model</button>
+      <PredictImage classNames={classNames}></PredictImage>
     </div>
   );
 }

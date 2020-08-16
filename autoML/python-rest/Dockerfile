@@ -1,3 +1,4 @@
+# FROM tensorflow/tensorflow:nightly
 FROM tiangolo/uwsgi-nginx-flask:python3.8
 
 RUN mkdir -p /app

@@ -8,7 +8,7 @@ const uploadFile = file => {
         // TODO: Add try/catch, log error, 
     return axios.post(`${baseUrl}/upload`, formData, {
       onUploadProgress: progressEvent => {
-        console.log(progressEvent.loaded / progressEvent.total)
+        console.log('Upload Progress: ', progressEvent.loaded / progressEvent.total)
       }
     });
 }
