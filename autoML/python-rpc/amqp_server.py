@@ -23,7 +23,6 @@ channel = connection.channel()
 
 channel.queue_declare(queue='rpc_queue')
 
-# TODO: NICE TO HAVE: Better error handling, e.g send fail response
 def write_file(filePath, content):
     if(len(content) == 0):
         print('Error Empty File!')
@@ -31,11 +30,8 @@ def write_file(filePath, content):
         with open(filePath, 'wb') as file:
             file.write(content)
         
-def download_and_unzip_files(request):
+def download_and_unzip_files(fileOne, fileTwo):
     # Get file names and make training directory
-    fileOne = request['fileOne']
-    fileTwo = request['fileTwo']
-
     fileOneName = os.path.splitext(fileOne)[0]
     fileTwoName = os.path.splitext(fileTwo)[0]
 
@@ -44,8 +40,6 @@ def download_and_unzip_files(request):
         os.makedirs(dir_name)
         
     # Download and save files   
-    # TODO: NICE TO HAVE: Better error handling, e.g send fail response
-    # TODO: "File One was Empty!" and then output back to user...
     fileOneURL = BASE_URL + fileOne
     fileTwoURL = BASE_URL + fileTwo
 
@@ -113,7 +107,7 @@ def train_model(dir_name, class_names):
         pooling='avg',
         input_shape=(224,224,3))
 
-    #Freeze base model
+    #Freeze base model so only train top layer. 
     base_model.trainable = False
 
     model = keras.Sequential()
@@ -121,7 +115,7 @@ def train_model(dir_name, class_names):
     model.add(layers.Flatten())
     model.add(layers.Dense(NUM_CLASSES, activation='softmax')) # Last output/classifcation layer. 
 
-    # 1 Epoch for the sake of speed for Demo
+    # 1 Epoch for the sake of speed for the demo
     print('Training Model')
     epochs = 1
     model.compile(optimizer='adam', 
@@ -132,6 +126,7 @@ def train_model(dir_name, class_names):
     results = model.evaluate(val_ds)
     print("test loss, test acc:", results)
 
+    # Save model in temp directory
     MODEL_DIR = tempfile.gettempdir()
     version = 1
     export_path = os.path.join(MODEL_DIR, str(version))
@@ -152,8 +147,9 @@ def train_model(dir_name, class_names):
     return model, MODEL_DIR
 
 def serve_model():
+    # Run bash command to start a tensorflow REST server on this container
     bash_cmd = "nohup tensorflow_model_server --port=8500 --rest_api_port=8501 \
-  --model_name=fashion_model --model_base_path=" + os.environ["MODEL_DIR"] + " >server.log 2>&1 &"
+  --model_name=model --model_base_path=" + os.environ["MODEL_DIR"] + " >server.log 2>&1 &"
     os.system(bash_cmd)
 
 def on_request(ch, method, props, body):
@@ -166,17 +162,18 @@ def on_request(ch, method, props, body):
 
     fileOne = request['fileOne']
     fileTwo = request['fileTwo']
-
     fileOneName = os.path.splitext(fileOne)[0]
     fileTwoName = os.path.splitext(fileTwo)[0]
     class_names = [fileOneName, fileTwoName]
 
-    dir_name = download_and_unzip_files(request)
+    dir_name = download_and_unzip_files(fileOne, fileTwo)
     print('Finished Downloading')
-    model, model_dir = train_model(dir_name, class_names)
+
+    train_model(dir_name, class_names)
     serve_model()
     print('Finished Serving')
 
+    # Return class names so that frontend can interpret 0, 1 response results with human readable labels. 
     response = {}
     response['class_names'] = class_names
     body = json.dumps(response).encode('utf-8')
