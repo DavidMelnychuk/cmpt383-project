@@ -115,7 +115,7 @@ def train_model(dir_name, class_names):
     model.add(layers.Flatten())
     model.add(layers.Dense(NUM_CLASSES, activation='softmax')) # Last output/classifcation layer. 
 
-    # 1 Epoch for the sake of speed for the demo
+    # 1 Epoch for the sake of speed for the demo, leads to bad accuracy however
     print('Training Model')
     epochs = 1
     model.compile(optimizer='adam', 
@@ -171,7 +171,7 @@ def on_request(ch, method, props, body):
 
     train_model(dir_name, class_names)
     serve_model()
-    print('Finished Serving')
+    print('Finished Training and Serving')
 
     # Return class names so that frontend can interpret 0, 1 response results with human readable labels. 
     response = {}

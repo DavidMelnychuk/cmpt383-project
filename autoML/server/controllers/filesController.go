@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 )
-const UPLOAD_FILE_DR = "uploadedFiles/"
 
+const uploadFilesDir = "uploadedFiles/"
 
 // Upload a single file
 func UploadFile(c *gin.Context){
@@ -18,7 +18,7 @@ func UploadFile(c *gin.Context){
 			}
 			log.Println(file.Filename)
 			// Upload the file to specific dst.
-			dst := UPLOAD_FILE_DR + file.Filename
+			dst := uploadFilesDir + file.Filename
 			err = c.SaveUploadedFile(file, dst)
 			if err != nil {
 				log.Fatal(err)

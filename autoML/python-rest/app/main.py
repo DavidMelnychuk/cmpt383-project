@@ -13,7 +13,6 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# Assume model name is always the same
 PREDICT_ENDPOINT = 'http://python-rpc:8501/v1/models/model:predict'
 
 @app.route('/predict', methods=['POST'])

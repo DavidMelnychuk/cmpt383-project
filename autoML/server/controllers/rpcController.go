@@ -10,7 +10,7 @@ import (
 	"os"
 )
 
-// Upload a single file
+// Train Model by making an RPC call to python server with tensorflow
 func TrainModel(c *gin.Context) {
 	fileOne := c.Param("fileOne")
 	fileTwo := c.Param("fileTwo")
