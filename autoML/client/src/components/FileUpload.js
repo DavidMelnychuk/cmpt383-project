@@ -1,9 +1,9 @@
 import React from 'react'
-import '../app.css'
+import '../styles/app.css'
 
 const FileUpload = ({handleFileChange, handleUpload}) => {
     return (
-        <div classname="test">
+        <div>
             <form onSubmit={handleUpload}>
                 <input accept=".zip" type="file" onChange={handleFileChange}></input>
                 <input type="submit" value="Upload"></input>

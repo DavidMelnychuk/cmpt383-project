@@ -1,23 +1,4 @@
-/* Taken from https://ggbaker.ca/470/content/style.html */
-#root {
-    max-width: 40em;
-    line-height: 1.6;
-    margin: 0 auto;
-    padding: 2em;
-    color: #333;
-    font-family: "Helvetica", "Arial", sans-serif;
-  }
-
-  h1, h2, h3 {
-    line-height: 1.2;
-  }
-  @media print {
-    body {
-      line-height: 1.4;
-    }
-  }
-  
-  .uploadFiles {
+.uploadFiles {
     display:flex;
 }
 
@@ -51,4 +32,9 @@ h1, h2, h3{
 
 #predict-image-container{
     margin-top: 3em;
+}
+
+#preview-image {
+    text-align:center;
+    margin: 3em;
 }

@@ -6,17 +6,57 @@ import PredictImage from './components/PredictImage';
 import SuccessSnackbar from './components/SuccessSnackbar';
 import Button from '@material-ui/core/Button';
 import AndroidIcon from '@material-ui/icons/Android';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import './styles/app.css'
+import AwesomeComponent from './components/AwesomeComponent'
+
+import Fab from '@material-ui/core/Fab';
+import CheckIcon from '@material-ui/icons/Check';
+import SaveIcon from '@material-ui/icons/Save';
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import { green } from '@material-ui/core/colors';
 
 
-import './app.css'
+const useStyles = makeStyles((theme) => ({
+  wrapper: {
+    margin: theme.spacing(1),
+    position: 'relative',
+  },
+  buttonSuccess: {
+    backgroundColor: green[500],
+    '&:hover': {
+      backgroundColor: green[700],
+    },
+  },
+  fabProgress: {
+    color: green[500],
+  },
+  buttonProgress: {
+    color: green[500],
+  },
+}));
+
 
 const App = () => {
+  const classes = useStyles();
   const [fileOne, setFileOne] = useState('');
   const [filenameOne, setFilenameOne] = useState('');
   const [fileTwo, setFileTwo] = useState('');
   const [filenameTwo, setFilenameTwo] = useState('');
-  const [classNames, setClassNames] = useState([filenameOne, filenameTwo])
-  const [success, setSuccess] = useState(false)
+  const [classNames, setClassNames] = useState([filenameOne, filenameTwo]);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [modelTraining, setModelTraining] = useState(false);
+  const [modelSuccess, setModelSuccess] = useState(false);
+
+  // TODO: DELETE FOR MOCKS
+  const timer = React.useRef();
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const buttonClassname = clsx({
+    [classes.buttonSuccess]: modelSuccess,
+  });
 
   const handleFileChange = (event, setFile, setFilename) => {
     const newFile = event.target.files[0];
@@ -29,25 +69,38 @@ const App = () => {
   const handleUpload = (event, file) => {
     event.preventDefault();
     console.log(file);
-    setSuccess(false)
-    fileService.uploadFile(file).then(()=> setSuccess(true));
+    setUploadSuccess(false)
+    fileService.uploadFile(file).then(()=> setUploadSuccess(true));
   }
   
   const trainModel = (event, filenameOne, filenameTwo, setClassNames) => {
-    // Makes a GET request to Go Server
+    // Makes a POST request to Go Server
     // Go Server makes a RPC Call to Python server. 
-    // Python Server then downloads files from this server
-    // Python server trains using those files.
-    // Then serves an ML Model.
-    // When done => Spinner logo finish.
-    // Can then upload another Image. 
+    // Python Server downloads files from GO server and trains models witth those files
+    // Then serves the model with TF serving
     //TODO: Nice to have error handling to prompt user if no files uploaded yet.
+    setModelTraining(true);
+    setModelSuccess(false);
     event.preventDefault();
-    rpcService.trainModel(filenameOne, filenameTwo).then((response) => {
-      console.log(response)
-      setClassNames(response.class_names)
-    })
+
+    // rpcService.trainModel(filenameOne, filenameTwo).then((response) => {
+    //   console.log(response)
+    //   setClassNames(response.class_names)
+    //   setModelTraining(false);
+    //   setModelSuccess(true);
+    // })
   }
+
+  const handleButtonClick = () => {
+    if (!loading) {
+      setSuccess(false);
+      setLoading(true);
+      timer.current = setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+      }, 2000);
+    }
+  };
 
   return (
     <div>
@@ -66,11 +119,28 @@ const App = () => {
       </div>
 
       <div id="train-button-wrapper">
-      {/* <Button variant="contained">Default</Button> */}
-        <Button size="small" variant="contained" startIcon={<AndroidIcon></AndroidIcon>} onClick={(e) => trainModel(e, filenameOne, filenameTwo, setClassNames)} disableElevation >Train Model</Button>
+        <div className={classes.wrapper}>
+          <Fab
+            variant="extended"
+            color="inherit"
+            className={buttonClassname}
+            // onClick={(e) => trainModel(e, filenameOne, filenameTwo, setClassNames)}
+            onClick={handleButtonClick}
+            disabled={loading}
+          >
+            {/* {modelSuccess ? <CheckIcon /> : <AndroidIcon />} */}
+            {success ? <CheckIcon style={{margin: '0.25em'}} /> : <AndroidIcon style={{margin: '0.25em'}}/>}
+            Train Model
+          </Fab>
+        </div>
+        {/* {modelTraining && <CircularProgress size={42} className={classes.fabProgress} />}
+        {modelSuccess && <strong>Model Training Complete!</strong>} */}
+        {loading && <CircularProgress style={{margin: '2em'}}  size={48} className={classes.fabProgress} />}
+        {success && <div id="model-status"><strong>Model Training Complete!</strong></div>}
       </div>
+
       <PredictImage classNames={classNames}></PredictImage>
-      {success && <SuccessSnackbar></SuccessSnackbar>}
+      {uploadSuccess && <SuccessSnackbar></SuccessSnackbar>}
     </div>
   );
 }
