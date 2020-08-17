@@ -40,7 +40,7 @@ const PredictImage = ({classNames}) => {
 
   return(
     <div>
-      <h1> Upload a File to Test Model Prediction</h1>
+      <h2>Test Model Prediction on New Image</h2>
       <div id="upload-predict-image">
         <form onSubmit={(e) => predictImage(e, image, setPredictedLabel, setPredictionConfidence)} encType = "multipart/form-data">
           <input type="file" onChange={(e) => handleImageChange(e, setImage, setImageURL)} accept="image/*"></input>
