@@ -23,6 +23,12 @@ const PredictImage = ({classNames}) => {
   }
 
   const predictImage = (event, image, setPredictedLabel, setPredictionConfidence) => {
+    if(!image){
+      window.alert("Error: Please select an image file to predict.")
+      return;
+    }
+
+
     if (!predicting) {
       setPredicting(true);
       timer.current = setTimeout(() => {
@@ -67,7 +73,7 @@ const PredictImage = ({classNames}) => {
 
       <LoadingOverlay active={predicting} text='Predicting...'>
         <div id="preview-image">
-          {predictedLabel ? (<p>Model predicts: {predictedLabel} with {predictionConfidience} % confidence.</p>) : null} 
+          {predictedLabel ? (<strong>Model predicts: {predictedLabel} with {predictionConfidience} % confidence.</strong>) : null} 
           {image ? (<img src={imageURL} alt="preview"></img>) : null }
         </div>
       </LoadingOverlay>

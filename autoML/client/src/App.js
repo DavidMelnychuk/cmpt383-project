@@ -17,6 +17,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { green } from '@material-ui/core/colors';
 
+import Alert from '@material-ui/lab/Alert';
+
+
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -67,6 +70,10 @@ const App = () => {
   }
 
   const handleUpload = (event, file) => {
+    if(!file){
+      window.alert("Error: Please select a zip file to upload.")
+      return
+    }
     event.preventDefault();
     console.log(file);
     setUploadSuccess(false)
@@ -78,6 +85,10 @@ const App = () => {
     // Go Server makes a RPC Call to Python server. 
     // Python Server downloads files from GO server and trains models witth those files
     // Then serves the model with TF serving
+    if(!fileOne || !fileTwo){
+      window.alert("Error: Please upload zip files for both classes before training.")
+      return;
+    }
     //TODO: Nice to have error handling to prompt user if no files uploaded yet.
     setModelTraining(true);
     setModelSuccess(false);
@@ -92,6 +103,11 @@ const App = () => {
   }
 
   const handleButtonClick = () => {
+    if(!fileOne || !fileTwo){
+      window.alert("Error: Please upload zip files for both classes before training.")
+      return;
+    }
+
     if (!loading) {
       setSuccess(false);
       setLoading(true);
@@ -138,7 +154,6 @@ const App = () => {
         {loading && <CircularProgress style={{margin: '2em'}}  size={48} className={classes.fabProgress} />}
         {success && <div id="model-status"><strong>Model Training Complete!</strong></div>}
       </div>
-
       <PredictImage classNames={classNames}></PredictImage>
       {uploadSuccess && <SuccessSnackbar></SuccessSnackbar>}
     </div>
