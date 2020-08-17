@@ -18,8 +18,7 @@ import clsx from 'clsx';
 import { green } from '@material-ui/core/colors';
 
 import Alert from '@material-ui/lab/Alert';
-
-
+import Particles from 'react-particles-js';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -119,7 +118,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="app-container">
       <h1> Welcome to AutoML</h1>
       <p>A web application which automatically trains a binary image classifier for two sets of images.</p>
 

@@ -15,8 +15,8 @@ const PredictImage = ({classNames}) => {
 
   const handleImageChange = (event, setImage, setImageURL) => {
     const newImage = event.target.files[0]
-    const newImageURL = URL.createObjectURL(event.target.files[0]);
     if(newImage !== undefined){
+      const newImageURL = URL.createObjectURL(event.target.files[0]);
       setImage(newImage)
       setImageURL(newImageURL)
     }
@@ -71,7 +71,7 @@ const PredictImage = ({classNames}) => {
         {image ? (<img src={imageURL} alt="preview"></img>) : null }
       </div> */}
 
-      <LoadingOverlay active={predicting} text='Predicting...'>
+      <LoadingOverlay spinner active={predicting} text='Predicting...'>
         <div id="preview-image">
           {predictedLabel ? (<strong>Model predicts: {predictedLabel} with {predictionConfidience} % confidence.</strong>) : null} 
           {image ? (<img src={imageURL} alt="preview"></img>) : null }
