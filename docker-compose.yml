@@ -41,8 +41,6 @@ services:
     react-app:
         build: ./autoML/client/
         container_name: react-app-383
-        volumes:
-            - ./autoML/client:/app/src/
         ports:
             - 3000:3000 
         environment:
