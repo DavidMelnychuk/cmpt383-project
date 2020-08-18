@@ -121,10 +121,7 @@ def train_model(dir_name, class_names):
     model.compile(optimizer='adam', 
                 loss='binary_crossentropy',
                 metrics=['accuracy'])
-    model.fit(train_ds, validation_data=val_ds, batch_size=batch_size, epochs=epochs)
-
-    results = model.evaluate(val_ds)
-    print("test loss, test acc:", results)
+    model.fit(train_ds, validation_data=val_ds, epochs=epochs)
 
     # Save model in temp directory
     MODEL_DIR = tempfile.gettempdir()
@@ -167,11 +164,8 @@ def on_request(ch, method, props, body):
     class_names = [fileOneName, fileTwoName]
 
     dir_name = download_and_unzip_files(fileOne, fileTwo)
-    print('Finished Downloading')
-
     train_model(dir_name, class_names)
     serve_model()
-    print('Finished Training and Serving')
 
     # Return class names so that frontend can interpret 0, 1 response results with human readable labels. 
     response = {}

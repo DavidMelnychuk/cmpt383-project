@@ -16,7 +16,7 @@ services:
         ports:
             - 8080:8080
         environment:
-            AMQP_URL: 'amqp://rabbitmq?connection_attempts=10&retry_delay=10'
+            AMQP_URL: 'amqp://rabbitmq?connection_attempts=10&retry_delay=10&heartbeat=600'
         depends_on: 
             - rabbitmq
 
@@ -36,7 +36,7 @@ services:
             # "rabbitmq" is the hostname.  Note that there is not a guarantee
             # that the server will start first!  Telling the pika client library
             # to try multiple times gets around this ordering issue.
-            AMQP_URL: 'amqp://rabbitmq?connection_attempts=10&retry_delay=10'
+            AMQP_URL: 'amqp://rabbitmq?connection_attempts=10&retry_delay=10&heartbeat=600'
 
     react-app:
         build: ./autoML/client/
