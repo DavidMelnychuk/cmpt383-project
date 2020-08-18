@@ -1,7 +1,6 @@
 import React from 'react'
-import '../styles/app.css'
 
-const FileUpload = ({handleFileChange, handleUpload}) => {
+const FileUpload = ({ handleFileChange, handleUpload }) => {
     return (
         <div>
             <form onSubmit={handleUpload}>
@@ -10,7 +9,7 @@ const FileUpload = ({handleFileChange, handleUpload}) => {
             </form>
         </div>
 
-  )
+    )
 }
 
 export default FileUpload

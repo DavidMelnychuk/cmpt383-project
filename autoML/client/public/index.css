@@ -1,68 +1,57 @@
-/* Taken from https://ggbaker.ca/470/content/style.html */
-#root {
-    max-width: 40em;
-    line-height: 1.6;
-    margin: 0 auto;
-    padding: 2em;
-    color: #333;
-    font-family: "Helvetica", "Arial", sans-serif;
-  }
+/* Adapted from https://ggbaker.ca/470/content/style.html */
 
-  h1, h2, h3 {
-    line-height: 1.2;
-  }
-  @media print {
-    body {
-      line-height: 1.4;
-    }
-  }
-  
-  .uploadFiles {
-    display:flex;
+h1, h2, h3 {
+  text-align: center;
 }
 
-.classFiles{
-    margin: auto;
-    padding: auto;
-    flex-grow: 1;
+html {
+  background-color: #232741;
+}
+
+h1, h2, h3 {
+  line-height: 1.2;
+}
+
+@media print {
+  body {
+    line-height: 1.4;
+  }
+}
+
+.app-container {
+  position: absolute;
+  width: 40em;
+  padding: 1.5em;
+  height: 50em;
+  background: #E8EAF6;
+  box-sizing: border-content;
+  z-index: 100;
+  border-radius: 25px;
+  border: 3px solid #E8EAF6;
+}
+
+.uploadFiles {
+  display: flex;
+}
+
+.classFiles {
+  margin: auto;
+  padding: auto;
+  flex-grow: 1;
+}
+
+#root {
+  max-width: 40em;
+  line-height: 1.6;
+  margin: 0 auto;
+  padding: 2em;
+  color: #333;
+  font-family: "Helvetica", "Arial", sans-serif;
 }
 
 #train-button-wrapper {
-    margin-top:2em;
-    text-align: center;
-}
-
-h1, h2, h3{
-    text-align:center;
-}
-
-#model-spinner{
-    margin:auto;
-}
-
-
-#model-status{
-    margin: 1.5em;
-}
-
-#upload-predict-image{
-    text-align:center;
-}
-
-#predict-image-container{
-    margin-top: 3em;
-}
-
-.app-container{
-    position: absolute;
-    width: 40em;
-    padding: 1.5em;
-    height: 45em;
-    background: #E8EAF6;
-    box-sizing: border-content;
-    z-index: 100;
-    border-radius: 25px;
-    border: 3px solid #E8EAF6;
+  margin-top: 2em;
+  text-align: center;
 }
 
 #particles-js {
@@ -70,6 +59,19 @@ h1, h2, h3{
   height: 100%;
   width: 100%;
 }
-html{
-  background-color: #232741;
+
+#model-spinner {
+  margin: auto;
+}
+
+#model-status {
+  margin: 1.5em;
+}
+
+#upload-predict-image {
+  text-align: center;
+}
+
+#predict-image-container {
+  margin-top: 3em;
 }

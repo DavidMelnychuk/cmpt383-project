@@ -1,40 +1,39 @@
 .uploadFiles {
-    display:flex;
+    display: flex;
 }
 
-.classFiles{
+.classFiles {
     margin: auto;
     padding: auto;
     flex-grow: 1;
 }
 
 #train-button-wrapper {
-    margin-top:2em;
+    margin-top: 2em;
     text-align: center;
 }
 
-h1, h2, h3{
-    text-align:center;
+h1, h2, h3 {
+    text-align: center;
 }
 
-#model-spinner{
-    margin:auto;
+#model-spinner {
+    margin: auto;
 }
 
-
-#model-status{
+#model-status {
     margin: 1.5em;
 }
 
-#upload-predict-image{
-    text-align:center;
+#upload-predict-image {
+    text-align: center;
 }
 
-#predict-image-container{
+#predict-image-container {
     margin-top: 3em;
 }
 
 #preview-image {
-    text-align:center;
+    text-align: center;
     margin: 3em;
 }
