@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import predictionService from "../services/predictionService"
 import LoadingOverlay from 'react-loading-overlay';
+import '../styles/app.css'
 
 // Code adapted from https://medium.com/@650egor/react-30-day-challenge-day-2-image-upload-preview-2d534f8eaaa
 
@@ -58,10 +59,9 @@ const PredictImage = ({ classNames }) => {
           <input type="submit" value="Predict"></input>
         </form>
       </div>
-
+      {predictedLabel ? (<strong id="model-prediction">Model predicts: {predictedLabel} with {predictionConfidience} % confidence.</strong>) : null}
       <LoadingOverlay spinner active={predicting} text='Predicting...'>
         <div id="preview-image">
-          {predictedLabel ? (<strong>Model predicts: {predictedLabel} with {predictionConfidience} % confidence.</strong>) : null}
           {image ? (<img src={imageURL} alt="preview" width="150" height="150"></img>) : null}
         </div>
       </LoadingOverlay>

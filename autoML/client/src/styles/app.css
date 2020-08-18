@@ -35,5 +35,9 @@ h1, h2, h3 {
 
 #preview-image {
     text-align: center;
+    margin: 0.5em;
+}
+#model-prediction{
+    text-align: center;
     margin: 3em;
 }
