@@ -43,6 +43,10 @@ I have provided sample input files for training and prediction under the example
 
 **Note:** Because everything is being run locally with multiple docker containers, compute power is limited and varies depending on your machine. Because of this, a very small dataset is used and the model is only trained with 1 epoch and MobileNetV2 for the sake of demo speed and purposes. This results in a very low accuracy score and mislabelling, especially for unseen test images. In practice, the python-server could be cloud-hosted with more access to compute power and thus the ability to train for more epochs to give usable results without taking an unreasonably long time.
 
+Screenshot:
+
+![](screenshots/demo.png)
+
 ## Future Work
 
 If I were to expand on this project, I would put the machine learning server on a separate cloud service and add user configuration options to training such as letting users tune the number of epochs, batch size, and learning rate.

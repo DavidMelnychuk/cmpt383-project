@@ -1,22 +1,20 @@
-2020-08-18 04:16:05.321314: I tensorflow_serving/model_servers/server.cc:87] Building single TensorFlow model file config:  model_name: model model_base_path: /tmp
-2020-08-18 04:16:05.322754: I tensorflow_serving/model_servers/server_core.cc:464] Adding/updating models.
-2020-08-18 04:16:05.324764: I tensorflow_serving/model_servers/server_core.cc:575]  (Re-)adding model: model
-2020-08-18 04:16:05.423484: I tensorflow_serving/core/basic_manager.cc:739] Successfully reserved resources to load servable {name: model version: 1}
-2020-08-18 04:16:05.423855: I tensorflow_serving/core/loader_harness.cc:66] Approving load for servable version {name: model version: 1}
-2020-08-18 04:16:05.424117: I tensorflow_serving/core/loader_harness.cc:74] Loading servable version {name: model version: 1}
-2020-08-18 04:16:05.424388: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:31] Reading SavedModel from: /tmp/1
-2020-08-18 04:16:05.482791: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:54] Reading meta graph with tags { serve }
-2020-08-18 04:16:05.483223: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:234] Reading SavedModel debug info (if present) from: /tmp/1
-2020-08-18 04:16:05.483853: I external/org_tensorflow/tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+2020-08-30 23:47:07.791458: I tensorflow_serving/model_servers/server.cc:87] Building single TensorFlow model file config:  model_name: model model_base_path: /tmp
+2020-08-30 23:47:07.793858: I tensorflow_serving/model_servers/server_core.cc:464] Adding/updating models.
+2020-08-30 23:47:07.794332: I tensorflow_serving/model_servers/server_core.cc:575]  (Re-)adding model: model
+2020-08-30 23:47:07.894793: I tensorflow_serving/core/basic_manager.cc:739] Successfully reserved resources to load servable {name: model version: 1}
+2020-08-30 23:47:07.895270: I tensorflow_serving/core/loader_harness.cc:66] Approving load for servable version {name: model version: 1}
+2020-08-30 23:47:07.895679: I tensorflow_serving/core/loader_harness.cc:74] Loading servable version {name: model version: 1}
+2020-08-30 23:47:07.896971: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:31] Reading SavedModel from: /tmp/1
+2020-08-30 23:47:07.967169: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:54] Reading meta graph with tags { serve }
+2020-08-30 23:47:07.967688: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:234] Reading SavedModel debug info (if present) from: /tmp/1
+2020-08-30 23:47:07.968656: I external/org_tensorflow/tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
 To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2020-08-18 04:16:11.397361: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:199] Restoring SavedModel bundle.
-2020-08-18 04:16:27.027155: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:183] Running initialization op on SavedModel bundle at path: /tmp/1
-2020-08-18 04:16:32.686686: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:303] SavedModel load for tags { serve }; Status: success: OK. Took 27262288 microseconds.
-2020-08-18 04:16:32.728003: I tensorflow_serving/servables/tensorflow/saved_model_warmup_util.cc:59] No warmup data file found at /tmp/1/assets.extra/tf_serving_warmup_requests
-2020-08-18 04:16:32.736167: I tensorflow_serving/core/loader_harness.cc:87] Successfully loaded servable version {name: model version: 1}
-2020-08-18 04:16:32.742306: I tensorflow_serving/model_servers/server.cc:367] Running gRPC ModelServer at 0.0.0.0:8500 ...
+2020-08-30 23:47:08.190203: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:199] Restoring SavedModel bundle.
+2020-08-30 23:47:08.907139: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:183] Running initialization op on SavedModel bundle at path: /tmp/1
+2020-08-30 23:47:09.199090: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:303] SavedModel load for tags { serve }; Status: success: OK. Took 1300841 microseconds.
+2020-08-30 23:47:09.248247: I tensorflow_serving/servables/tensorflow/saved_model_warmup_util.cc:59] No warmup data file found at /tmp/1/assets.extra/tf_serving_warmup_requests
+2020-08-30 23:47:09.256137: I tensorflow_serving/core/loader_harness.cc:87] Successfully loaded servable version {name: model version: 1}
+2020-08-30 23:47:09.267155: I tensorflow_serving/model_servers/server.cc:367] Running gRPC ModelServer at 0.0.0.0:8500 ...
 [warn] getaddrinfo: address family for nodename not supported
-[evhttp_server.cc : 223] NET_LOG: Couldn't bind to port 8501
-[evhttp_server.cc : 63] NET_LOG: Server has not been terminated. Force termination now.
-[evhttp_server.cc : 258] NET_LOG: Server is not running ...
-2020-08-18 04:16:32.752760: E tensorflow_serving/model_servers/server.cc:389] Failed to start HTTP Server at localhost:8501
+2020-08-30 23:47:09.273874: I tensorflow_serving/model_servers/server.cc:387] Exporting HTTP/REST API at:localhost:8501 ...
+[evhttp_server.cc : 238] NET_LOG: Entering the event loop ...
