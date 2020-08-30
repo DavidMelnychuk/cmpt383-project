@@ -50,4 +50,5 @@ Screenshot:
 ## Future Work
 
 If I were to expand on this project, I would put the machine learning server on a separate cloud service and add user configuration options to training such as letting users tune the number of epochs, batch size, and learning rate.
-If I were to do this project without the requirements of using three different programming languages, I would probably write it all in JavaScript using React, Node, and Tensorflow.js or all in Python with Flask and Keras.
+
+If I were to do this project without the requirements of using three different programming languages, I would probably write it all in JavaScript using React, Node, and Tensorflow.js and focus on improving the UI.
