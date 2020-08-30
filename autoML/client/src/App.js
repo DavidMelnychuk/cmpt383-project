@@ -13,8 +13,6 @@ const App = () => {
   const [filenameTwo, setFilenameTwo] = useState("");
   const [classNames, setClassNames] = useState(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
-  // const [modelTraining, setModelTraining] = useState(false);
-  // const [modelSuccess, setModelSuccess] = useState(false);
   const handleFileChange = (event, setFile, setFilename) => {
     const newFile = event.target.files[0];
     if (newFile !== undefined) {
@@ -34,7 +32,6 @@ const App = () => {
     fileService.uploadFile(file).then(() => setUploadSuccess(true));
   };
 
-  //TODO:Refactor UploadFiles, Training button
   return (
     <div className="app-container">
       <h1> Welcome to AutoML</h1>
@@ -43,6 +40,7 @@ const App = () => {
         for two sets of images.
       </p>
 
+      {/* TODO: Refactor file uploading into a React component  */}
       <div className="uploadFiles">
         <div className="classFiles">
           <h2>Upload Zip File for Class 1</h2>
@@ -63,6 +61,7 @@ const App = () => {
           />
         </div>
       </div>
+
       <TrainButton
         fileOne={fileOne}
         fileTwo={fileTwo}
